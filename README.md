@@ -243,7 +243,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For questions or issues:
 1. Check the [API Documentation](API_DOCUMENTATION.md)
 2. Open an issue in the repository
-3. Contact the development team
+3. Contact Somtochukwuazubike@outlook.com.au
 
 ---
 
