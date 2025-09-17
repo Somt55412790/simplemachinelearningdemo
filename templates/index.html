@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PropertyValuer Pro - AI-Powered Real Estate Valuation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --accent-green: #10b981;
+            --light-gray: #f8fafc;
+            --dark-gray: #334155;
+            --border-color: #e2e8f0;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-gray);
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .header-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .company-logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .main-card {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .form-section {
+            padding: 2.5rem;
+        }
+        
+        .section-title {
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .label-icon {
+            color: var(--secondary-blue);
+            margin-right: 0.5rem;
+            width: 20px;
+        }
+        
+        .form-control {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: white;
+        }
+        
+        .input-group-text {
+            background: var(--light-gray);
+            border: 2px solid var(--border-color);
+            border-right: none;
+            color: var(--dark-gray);
+        }
+        
+        .input-group .form-control {
+            border-left: none;
+        }
+        
+        .btn-predict {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, var(--accent-green) 0%, #059669 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .price-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+        
+        .confidence-badge {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-weight: 500;
+        }
+        
+        .features-summary {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .feature-item {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0.25rem;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+        
+        .loading-spinner {
+            display: none;
+        }
+        
+        .trust-indicators {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        
+        .trust-item {
+            display: inline-block;
+            margin: 0 1rem;
+            color: var(--dark-gray);
+        }
+        
+        .trust-icon {
+            color: var(--accent-green);
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .sample-data-btn {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--dark-gray);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .sample-data-btn:hover {
+            border-color: var(--secondary-blue);
+            color: var(--secondary-blue);
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 2rem 0;
+            }
+            .form-section {
+                padding: 1.5rem;
+            }
+            .price-display {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="container">
+            <div class="header-content">
+                <div class="company-logo">
+                    <i class="fas fa-home me-3"></i>PropertyValuer Pro
+                </div>
+                <div class="tagline">AI-Powered Real Estate Valuation Platform</div>
+                <p class="mt-3 mb-0" style="opacity: 0.8;">Get instant, accurate property valuations using advanced machine learning</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Main Valuation Card -->
+                <div class="main-card">
+                    <div class="form-section">
+                        <div class="section-title">
+                            <div class="section-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            Property Valuation Tool
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p class="text-muted">Enter your property details below to receive an instant AI-powered valuation based on current market data and comprehensive analysis.</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <button type="button" class="sample-data-btn" onclick="loadSampleData()">
+                                    <i class="fas fa-magic me-2"></i>Load Sample Data
+                                </button>
+                            </div>
+                        </div>
+
+                        <form id="valuationForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="OverallQual" class="form-label">
+                                            <i class="fas fa-star label-icon"></i>
+                                            Property Quality Rating
+                                        </label>
+                                        <select class="form-control" id="OverallQual" required>
+                                            <option value="">Select quality rating...</option>
+                                            <option value="1">1 - Very Poor</option>
+                                            <option value="2">2 - Poor</option>
+                                            <option value="3">3 - Fair</option>
+                                            <option value="4">4 - Below Average</option>
+                                            <option value="5">5 - Average</option>
+                                            <option value="6">6 - Above Average</option>
+                                            <option value="7">7 - Good</option>
+                                            <option value="8">8 - Very Good</option>
+                                            <option value="9">9 - Excellent</option>
+                                            <option value="10">10 - Very Excellent</option>
+                                        </select>
+                                        <small class="form-text text-muted">Overall material and finish quality of the property</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="GrLivArea" class="form-label">
+                                            <i class="fas fa-ruler-combined label-icon"></i>
+                                            Living Area
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="GrLivArea" 
+                                                   min="500" max="10000" step="50" required
+                                                   placeholder="1500">
+                                            <span class="input-group-text">sq ft</span>
+                                        </div>
+                                        <small class="form-text text-muted">Above ground living area in square feet</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="GarageCars" class="form-label">
+                                            <i class="fas fa-car label-icon"></i>
+                                            Garage Capacity
+                                        </label>
+                                        <select class="form-control" id="GarageCars" required>
+                                            <option value="">Select garage capacity...</option>
+                                            <option value="0">No Garage</option>
+                                            <option value="1">1 Car</option>
+                                            <option value="2">2 Cars</option>
+                                            <option value="3">3 Cars</option>
+                                            <option value="4">4+ Cars</option>
+                                        </select>
+                                        <small class="form-text text-muted">Number of cars that can fit in garage</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="GarageArea" class="form-label">
+                                            <i class="fas fa-warehouse label-icon"></i>
+                                            Garage Area
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="GarageArea" 
+                                                   min="0" max="2000" step="50" required
+                                                   placeholder="500">
+                                            <span class="input-group-text">sq ft</span>
+                                        </div>
+                                        <small class="form-text text-muted">Total garage area in square feet</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="TotalBsmtSF" class="form-label">
+                                            <i class="fas fa-layer-group label-icon"></i>
+                                            Basement Area
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="TotalBsmtSF" 
+                                                   min="0" max="5000" step="50" required
+                                                   placeholder="800">
+                                            <span class="input-group-text">sq ft</span>
+                                        </div>
+                                        <small class="form-text text-muted">Total finished and unfinished basement area</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-predict btn-primary btn-lg">
+                                    <span class="predict-text">
+                                        <i class="fas fa-chart-line me-2"></i>
+                                        Get Property Valuation
+                                    </span>
+                                    <span class="loading-spinner">
+                                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        Analyzing Property...
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div id="valuationResult"></div>
+                    </div>
+                </div>
+                
+                <!-- Trust Indicators -->
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <i class="fas fa-shield-alt trust-icon"></i>
+                        <strong>AI-Powered</strong><br>
+                        <small>Advanced ML algorithms</small>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-database trust-icon"></i>
+                        <strong>Data-Driven</strong><br>
+                        <small>Based on 1,460+ properties</small>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-clock trust-icon"></i>
+                        <strong>Instant Results</strong><br>
+                        <small>Get valuation in seconds</small>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-chart-line trust-icon"></i>
+                        <strong>82.4% Accuracy</strong><br>
+                        <small>Proven model performance</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load sample data function
+        function loadSampleData() {
+            document.getElementById('OverallQual').value = '7';
+            document.getElementById('GrLivArea').value = '1500';
+            document.getElementById('GarageCars').value = '2';
+            document.getElementById('GarageArea').value = '500';
+            document.getElementById('TotalBsmtSF').value = '800';
+        }
+        
+        // Format currency function
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(amount);
+        }
+        
+        // Main form submission handler
+        document.getElementById('valuationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const predictText = document.querySelector('.predict-text');
+            const loadingSpinner = document.querySelector('.loading-spinner');
+            const submitBtn = document.querySelector('.btn-predict');
+            const resultDiv = document.getElementById('valuationResult');
+            
+            predictText.style.display = 'none';
+            loadingSpinner.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            resultDiv.innerHTML = '';
+            
+            // Collect form data
+            const formData = {
+                OverallQual: parseInt(document.getElementById('OverallQual').value),
+                GrLivArea: parseInt(document.getElementById('GrLivArea').value),
+                GarageCars: parseInt(document.getElementById('GarageCars').value),
+                GarageArea: parseInt(document.getElementById('GarageArea').value),
+                TotalBsmtSF: parseInt(document.getElementById('TotalBsmtSF').value)
+            };
+            
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const confidenceInterval = data.confidence_interval;
+                    resultDiv.innerHTML = `
+                        <div class="result-card">
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <i class="fas fa-home me-3" style="font-size: 2rem;"></i>
+                                <h3 class="mb-0">Property Valuation Result</h3>
+                            </div>
+                            <div class="price-display">${data.prediction}</div>
+                            <p class="mb-4" style="opacity: 0.9;">Estimated market value based on current property characteristics</p>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="confidence-badge">
+                                        <strong>Low Estimate</strong><br>
+                                        ${confidenceInterval.formatted_lower}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="confidence-badge">
+                                        <strong>Best Estimate</strong><br>
+                                        ${data.prediction}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="confidence-badge">
+                                        <strong>High Estimate</strong><br>
+                                        ${confidenceInterval.formatted_upper}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="features-summary">
+                            <h5 class="mb-3" style="color: var(--primary-blue);">
+                                <i class="fas fa-list-check me-2"></i>Property Analysis Summary
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="feature-item">
+                                        <strong>Quality Rating:</strong> ${data.features_used.OverallQual}/10
+                                    </div>
+                                    <div class="feature-item">
+                                        <strong>Living Area:</strong> ${data.features_used.GrLivArea.toLocaleString()} sq ft
+                                    </div>
+                                    <div class="feature-item">
+                                        <strong>Garage Cars:</strong> ${data.features_used.GarageCars} cars
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="feature-item">
+                                        <strong>Garage Area:</strong> ${data.features_used.GarageArea.toLocaleString()} sq ft
+                                    </div>
+                                    <div class="feature-item">
+                                        <strong>Basement Area:</strong> ${data.features_used.TotalBsmtSF.toLocaleString()} sq ft
+                                    </div>
+                                    <div class="feature-item">
+                                        <strong>Total Area:</strong> ${(data.features_used.GrLivArea + data.features_used.TotalBsmtSF).toLocaleString()} sq ft
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Valuation completed on ${new Date(data.timestamp).toLocaleDateString()} at ${new Date(data.timestamp).toLocaleTimeString()} | 
+                                Model Accuracy: 82.4% R² Score
+                            </small>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Valuation Error:</strong> ${data.error}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Network Error:</strong> Unable to connect to valuation service. Please check your connection and try again.
+                    </div>
+                `;
+            } finally {
+                // Reset button state
+                predictText.style.display = 'inline-block';
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Form validation and user experience enhancements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add real-time validation feedback
+            const inputs = document.querySelectorAll('input[type="number"], select');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.value && this.checkValidity()) {
+                        this.classList.add('is-valid');
+                        this.classList.remove('is-invalid');
+                    } else if (this.value) {
+                        this.classList.add('is-invalid');
+                        this.classList.remove('is-valid');
+                    }
+                });
+            });
+            
+            // Auto-calculate garage area when garage cars change
+            document.getElementById('GarageCars').addEventListener('change', function() {
+                const garageCars = parseInt(this.value);
+                const garageAreaInput = document.getElementById('GarageArea');
+                
+                if (garageCars > 0 && !garageAreaInput.value) {
+                    // Estimate 250 sq ft per car
+                    garageAreaInput.value = garageCars * 250;
+                } else if (garageCars === 0) {
+                    garageAreaInput.value = 0;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

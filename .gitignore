@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Development/Analysis files (available but not tracked for deployment)
+EDA_Analysis/
+data_description.txt
+sample_submission.csv
+test.csv
+API_DOCUMENTATION.md
+DEPLOYMENT_GUIDE.md
+
+# Pre-trained model files (Railway will generate these during build)
+model/
+
+# Jupyter notebooks
+*.ipynb
+
+# Temporary files
+*.tmp
+*.bak
+*.zip
+
+# Local environment files
+.env
+.env.local
